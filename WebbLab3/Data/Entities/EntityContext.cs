@@ -10,7 +10,7 @@ namespace WebbLab3
     {
        
 
-        public EntityContext(DbContextOptions<EntityContext> DBConnection) : base(DBConnection) { }
+        public EntityContext(DbContextOptions<EntityContext> options) : base(options) { }
         public virtual DbSet<Salon> Salons { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Movie> Movies { get; set; }
@@ -45,7 +45,7 @@ namespace WebbLab3
                 .HasColumnType("int");
             customerConfig.Property(p => p.UserName)
                 .HasColumnName("Name")
-                .HasColumnType("nvarchar");
+                .HasColumnType("nvarchar(50)");
 
             //Relation 1:n
             customerConfig.HasOne(p => p.Salon)
@@ -56,12 +56,13 @@ namespace WebbLab3
 
             movieConfig.Property(p => p.MovieName)
                 .HasColumnName("MovieName")
-                .HasColumnType("nvarchar");
+                .HasColumnType("nvarchar(50)");
 
             movieConfig.Property(p => p.MovieDateTime)
                 .HasColumnName("MovieViewTime")
                 .HasColumnType("DateTime");
 
+            //Relation 1:n
             movieConfig.HasMany(p => p.Salons)
                 .WithOne(p => p.Movie);
 

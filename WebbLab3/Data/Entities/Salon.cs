@@ -7,7 +7,7 @@ namespace WebbLab3
 {
     public class Salon
     {
-        public virtual IList<Movie> Movies { get; set; }
+        public virtual Movie Movie { get; set; }
         public virtual IList<Customer> Customers { get; set; }
 
         private int id { get; set; }
