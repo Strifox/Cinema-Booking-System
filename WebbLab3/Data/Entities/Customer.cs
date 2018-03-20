@@ -7,7 +7,8 @@ namespace WebbLab3
 {
     public class Customer
     {
-        public virtual Salon Salon { get; set; }
+        //Navigation Property
+        public Salon Salon { get; set; }
 
 
         private int id { get; set; }

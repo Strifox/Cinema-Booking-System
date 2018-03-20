@@ -8,12 +8,11 @@ namespace WebbLab3
 {
     public class EntityContext : DbContext
     {
-       
 
         public EntityContext(DbContextOptions<EntityContext> options) : base(options) { }
-        public virtual DbSet<Salon> Salons { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
-        public virtual DbSet<Movie> Movies { get; set; }
+        public DbSet<Salon> Salons { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Movie> Movies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -27,14 +26,15 @@ namespace WebbLab3
             salonConfig.HasKey(p => p.Id);
 
             salonConfig.Property(p => p.SalonName)
-                .HasColumnName("Movie")
-                .HasColumnType("int");
+                .HasColumnName("Name")
+                .HasColumnType("nvarchar(50)");
+
             salonConfig.Property(p => p.SalonSeats)
                 .HasColumnName("Seats")
                 .HasColumnType("int");
 
             //Relation 1:n
-            salonConfig.HasMany(p => p.Customers)
+            salonConfig.HasMany(p => p.Movies)
                 .WithOne(p => p.Salon);
 
             customerConfig.ToTable("Customer");
@@ -47,12 +47,9 @@ namespace WebbLab3
                 .HasColumnName("Name")
                 .HasColumnType("nvarchar(50)");
 
-            //Relation 1:n
-            customerConfig.HasOne(p => p.Salon)
-                .WithMany(p => p.Customers);
-
             movieConfig.ToTable("Movie");
             movieConfig.HasKey(p => p.MovieName);
+
 
             movieConfig.Property(p => p.MovieName)
                 .HasColumnName("MovieName")
@@ -63,8 +60,8 @@ namespace WebbLab3
                 .HasColumnType("DateTime");
 
             //Relation 1:n
-            movieConfig.HasMany(p => p.Salons)
-                .WithOne(p => p.Movie);
+            movieConfig.HasOne(p => p.Salon)
+                .WithMany(p => p.Movies);
 
         }
     }

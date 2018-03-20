@@ -12,7 +12,6 @@ namespace WebbLab3
 {
     public class Startup
     {
-        private const string DBConnection = @"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=WebbLabb 3;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         public Startup(IConfiguration configuration)
         {
@@ -25,8 +24,8 @@ namespace WebbLab3
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-
-            services.AddDbContext<EntityContext>(o => o.UseSqlServer(DBConnection));
+            string connectionString = Configuration.GetConnectionString("WebbLab3DB");
+            services.AddDbContext<EntityContext>(o => o.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

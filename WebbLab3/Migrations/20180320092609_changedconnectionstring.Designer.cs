@@ -11,9 +11,10 @@ using WebbLab3;
 namespace WebbLab3.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    partial class EntityContextModelSnapshot : ModelSnapshot
+    [Migration("20180320092609_changedconnectionstring")]
+    partial class changedconnectionstring
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +54,7 @@ namespace WebbLab3.Migrations
                         .HasColumnName("MovieViewTime")
                         .HasColumnType("DateTime");
 
-                    b.Property<int>("SalonId")
-                        .HasColumnName("SalonId")
-                        .HasColumnType("int");
+                    b.Property<int?>("SalonId");
 
                     b.HasKey("MovieName");
 
@@ -69,9 +68,9 @@ namespace WebbLab3.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("SalonName")
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int>("SalonName")
+                        .HasColumnName("Movie")
+                        .HasColumnType("int");
 
                     b.Property<int>("SalonSeats")
                         .HasColumnName("Seats")
@@ -93,8 +92,7 @@ namespace WebbLab3.Migrations
                 {
                     b.HasOne("WebbLab3.Salon", "Salon")
                         .WithMany("Movies")
-                        .HasForeignKey("SalonId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("SalonId");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,12 @@
-﻿
+﻿.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+    vertical-align: top;
+}
 
+.navbar .navbar-collapse {
+    text-align: center;
+}
 
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
@@ -36,6 +43,7 @@ header {
         .popup-form input[type=checkbox], .popup-form input[type=submit] {
             width: auto;
         }
+
 
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {

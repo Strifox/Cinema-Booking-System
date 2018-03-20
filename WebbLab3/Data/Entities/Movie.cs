@@ -8,12 +8,14 @@ namespace WebbLab3
 {
     public class Movie
     {
-        public  IList<Salon> Salons { get; set; }
+        //Navigation Property
+        public Salon Salon { get; set; }
+
         private string movieName { get; set; }
         private DateTime movieDateTime { get; set; }
 
         public string MovieName { get => movieName; set => movieName = value; }
         public DateTime MovieDateTime { get => movieDateTime; set => movieDateTime = value; }
-
+        //public int SalonId { get => salonId; set => salonId = value; }
     }
 }

@@ -7,16 +7,16 @@ namespace WebbLab3
 {
     public class Salon
     {
-        public virtual Movie Movie { get; set; }
-        public virtual IList<Customer> Customers { get; set; }
+        //Navigation Property
+        public IList<Movie> Movies { get; set; }
 
         private int id { get; set; }
+        private string salonName { get; set; }
         private int salonSeats { get; set; }
-        private int salonName { get; set; }
 
         //public int Id { get => id; set => id = value; }
         public int Id { get => id; set => id = value; }
         public int SalonSeats { get => salonSeats; set => salonSeats = value; }
-        public int SalonName { get => salonName; set => salonName = value; } // Sets SalonName to same number as ID, e.g Salon 1 & Salon 2 etc.
+        public string SalonName { get => salonName; set => salonName = value; } // Sets SalonName to same number as ID, e.g Salon 1 & Salon 2 etc.
     }
 }
