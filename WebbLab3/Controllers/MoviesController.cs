@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebbLab3;
+using WebbLab3.Migrations;
 using WebbLab3.Models;
 
 namespace WebbLab3.Controllers
@@ -22,8 +24,6 @@ namespace WebbLab3.Controllers
         // GET: Movies
         public async Task<IActionResult> Index()
         {
-
-
             return View(await _context.Movies.ToListAsync());
         }
 
@@ -46,26 +46,20 @@ namespace WebbLab3.Controllers
         }
 
         // GET: Movies/Create
-        public IActionResult Create(string salonName)
+        public IActionResult Create()
         {
-            //return View(new MovieViewModel() { Movie = _context.Movies, Salons = );
-            var salonNameQuery = from n in _context.Salons
-                                 orderby n.SalonName
-                                 select n.SalonName;
-
-            
 
             return View();
         }
 
+
         // POST: Movies/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598. 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("MovieName,MovieDateTime,SalonId")] Movie movie)
         {
-
 
             if (ModelState.IsValid)
             {

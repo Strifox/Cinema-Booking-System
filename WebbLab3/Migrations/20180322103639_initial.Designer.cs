@@ -11,8 +11,8 @@ using WebbLab3;
 namespace WebbLab3.Migrations
 {
     [DbContext(typeof(EntityContext))]
-    [Migration("20180320125732_added-Salong-Id-in-MovieModel")]
-    partial class addedSalongIdinMovieModel
+    [Migration("20180322103639_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,15 +26,11 @@ namespace WebbLab3.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("PlayerTickets")
-                        .HasColumnName("Tickets")
-                        .HasColumnType("int");
+                    b.Property<int>("PlayerTickets");
 
                     b.Property<int?>("SalonId");
 
-                    b.Property<string>("UserName")
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -46,17 +42,11 @@ namespace WebbLab3.Migrations
             modelBuilder.Entity("WebbLab3.Movie", b =>
                 {
                     b.Property<string>("MovieName")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("MovieName")
-                        .HasColumnType("nvarchar(50)");
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("MovieDateTime")
-                        .HasColumnName("MovieViewTime")
-                        .HasColumnType("DateTime");
+                    b.Property<DateTime>("MovieDateTime");
 
-                    b.Property<int?>("SalonId");
-
-                    b.Property<int>("SalongId");
+                    b.Property<int>("SalonId");
 
                     b.HasKey("MovieName");
 
@@ -70,13 +60,9 @@ namespace WebbLab3.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("SalonName")
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("SalonName");
 
-                    b.Property<int>("SalonSeats")
-                        .HasColumnName("Seats")
-                        .HasColumnType("int");
+                    b.Property<int>("SalonSeats");
 
                     b.HasKey("Id");
 
@@ -94,7 +80,8 @@ namespace WebbLab3.Migrations
                 {
                     b.HasOne("WebbLab3.Salon", "Salon")
                         .WithMany("Movies")
-                        .HasForeignKey("SalonId");
+                        .HasForeignKey("SalonId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -25,15 +25,11 @@ namespace WebbLab3.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("PlayerTickets")
-                        .HasColumnName("Tickets")
-                        .HasColumnType("int");
+                    b.Property<int>("PlayerTickets");
 
                     b.Property<int?>("SalonId");
 
-                    b.Property<string>("UserName")
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("UserName");
 
                     b.HasKey("Id");
 
@@ -45,17 +41,11 @@ namespace WebbLab3.Migrations
             modelBuilder.Entity("WebbLab3.Movie", b =>
                 {
                     b.Property<string>("MovieName")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("MovieName")
-                        .HasColumnType("nvarchar(50)");
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("MovieDateTime")
-                        .HasColumnName("MovieViewTime")
-                        .HasColumnType("DateTime");
+                    b.Property<DateTime>("MovieDateTime");
 
-                    b.Property<int>("SalonId")
-                        .HasColumnName("SalonId")
-                        .HasColumnType("int");
+                    b.Property<int>("SalonId");
 
                     b.HasKey("MovieName");
 
@@ -69,13 +59,9 @@ namespace WebbLab3.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("SalonName")
-                        .HasColumnName("Name")
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("SalonName");
 
-                    b.Property<int>("SalonSeats")
-                        .HasColumnName("Seats")
-                        .HasColumnType("int");
+                    b.Property<int>("SalonSeats");
 
                     b.HasKey("Id");
 

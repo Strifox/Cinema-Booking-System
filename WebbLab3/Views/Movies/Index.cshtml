@@ -15,6 +15,7 @@
             <th>@Html.DisplayNameFor(model => model.MovieName)</th>
             <th> @Html.DisplayNameFor(model => model.MovieDateTime)</th>
             <th> @Html.DisplayNameFor(model => model.Salon)</th>
+            <th> @Html.DisplayNameFor(model => model.SalonId)</th>
             <th></th>
         </tr>
     </thead>
@@ -30,7 +31,7 @@
                     @Html.DisplayFor(modelItem => item.MovieDateTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Salon.Id)
+                    @Html.DisplayFor(modelItem => item.SalonId)
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.MovieName">Edit</a> |

@@ -25,43 +25,12 @@ namespace WebbLab3
             salonConfig.ToTable("Salon");
             salonConfig.HasKey(p => p.Id);
 
-            salonConfig.Property(p => p.SalonName)
-                .HasColumnName("Name")
-                .HasColumnType("nvarchar(50)");
-
-            salonConfig.Property(p => p.SalonSeats)
-                .HasColumnName("Seats")
-                .HasColumnType("int");
-
-            //Relation 1:n
-            salonConfig.HasMany(p => p.Movies)
-                .WithOne(p => p.Salon);
-
             customerConfig.ToTable("Customer");
             customerConfig.HasKey(p => p.Id);
-
-            customerConfig.Property(p => p.PlayerTickets)
-                .HasColumnName("Tickets")
-                .HasColumnType("int");
-            customerConfig.Property(p => p.UserName)
-                .HasColumnName("Name")
-                .HasColumnType("nvarchar(50)");
-
+          
             movieConfig.ToTable("Movie");
             movieConfig.HasKey(p => p.MovieName);
 
-
-            movieConfig.Property(p => p.MovieName)
-                .HasColumnName("MovieName")
-                .HasColumnType("nvarchar(50)");
-
-            movieConfig.Property(p => p.MovieDateTime)
-                .HasColumnName("MovieViewTime")
-                .HasColumnType("DateTime");
-
-            //Relation 1:n
-            movieConfig.HasOne(p => p.Salon)
-                .WithMany(p => p.Movies);
 
         }
     }

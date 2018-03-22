@@ -5,41 +5,22 @@ using System.Collections.Generic;
 
 namespace WebbLab3.Migrations
 {
-    public partial class Firstadd : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "Movie",
-                columns: table => new
-                {
-                    MovieName = table.Column<string>(type: "nvarchar(50)", nullable: false),
-                    MovieViewTime = table.Column<DateTime>(type: "DateTime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Movie", x => x.MovieName);
-                });
-
             migrationBuilder.CreateTable(
                 name: "Salon",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    MovieName = table.Column<string>(nullable: true),
-                    Movie = table.Column<int>(type: "int", nullable: false),
-                    Seats = table.Column<int>(type: "int", nullable: false)
+                    SalonName = table.Column<string>(nullable: true),
+                    SalonSeats = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Salon", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Salon_Movie_MovieName",
-                        column: x => x.MovieName,
-                        principalTable: "Movie",
-                        principalColumn: "MovieName",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,9 +29,9 @@ namespace WebbLab3.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Tickets = table.Column<int>(type: "int", nullable: false),
+                    PlayerTickets = table.Column<int>(nullable: false),
                     SalonId = table.Column<int>(nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(50)", nullable: true)
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -63,15 +44,34 @@ namespace WebbLab3.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Movie",
+                columns: table => new
+                {
+                    MovieName = table.Column<string>(nullable: false),
+                    MovieDateTime = table.Column<DateTime>(nullable: false),
+                    SalonId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Movie", x => x.MovieName);
+                    table.ForeignKey(
+                        name: "FK_Movie_Salon_SalonId",
+                        column: x => x.SalonId,
+                        principalTable: "Salon",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Customer_SalonId",
                 table: "Customer",
                 column: "SalonId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Salon_MovieName",
-                table: "Salon",
-                column: "MovieName");
+                name: "IX_Movie_SalonId",
+                table: "Movie",
+                column: "SalonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -80,10 +80,10 @@ namespace WebbLab3.Migrations
                 name: "Customer");
 
             migrationBuilder.DropTable(
-                name: "Salon");
+                name: "Movie");
 
             migrationBuilder.DropTable(
-                name: "Movie");
+                name: "Salon");
         }
     }
 }
