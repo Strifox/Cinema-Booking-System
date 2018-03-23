@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebbLab3.Customer>
+﻿@model IEnumerable<WebbLab3.Booking>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,11 +13,11 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.PlayerTickets)
+                    @Html.DisplayNameFor(model => model.Tickets)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.UserName)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Showing)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -25,10 +25,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.PlayerTickets)
+                @Html.DisplayFor(modelItem => item.Tickets)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.UserName)
+                @Html.DisplayFor(modelItem => item.Showing.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

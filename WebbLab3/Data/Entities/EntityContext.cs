@@ -11,26 +11,17 @@ namespace WebbLab3
 
         public EntityContext(DbContextOptions<EntityContext> options) : base(options) { }
         public DbSet<Salon> Salons { get; set; }
-        public DbSet<Customer> Customers { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<Booking> Bookings { get; set; }
+        public DbSet<Showing> Showings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
 
-            var salonConfig = modelBuilder.Entity<Salon>();
-            var customerConfig = modelBuilder.Entity<Customer>();
-            var movieConfig = modelBuilder.Entity<Movie>();
-
-            salonConfig.ToTable("Salon");
-            salonConfig.HasKey(p => p.Id);
-
-            customerConfig.ToTable("Customer");
-            customerConfig.HasKey(p => p.Id);
-          
-            movieConfig.ToTable("Movie");
-            movieConfig.HasKey(p => p.MovieName);
-
+            modelBuilder.Entity<Salon>().ToTable("Salon");
+            modelBuilder.Entity<Movie>().ToTable("Movie");
+            modelBuilder.Entity<Booking>().ToTable("Booking");
+            modelBuilder.Entity<Showing>().ToTable("Showing");
 
         }
     }

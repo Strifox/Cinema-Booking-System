@@ -9,22 +9,23 @@ using WebbLab3;
 
 namespace WebbLab3.Controllers
 {
-    public class MoviesController : Controller
+    public class BookingsController : Controller
     {
         private readonly EntityContext _context;
 
-        public MoviesController(EntityContext context)
+        public BookingsController(EntityContext context)
         {
             _context = context;
         }
 
-        // GET: Movies
+        // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Movies.ToListAsync());
+            var entityContext = _context.Bookings.Include(b => b.Showing);
+            return View(await entityContext.ToListAsync());
         }
 
-        // GET: Movies/Details/5
+        // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -32,39 +33,42 @@ namespace WebbLab3.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies
+            var booking = await _context.Bookings
+                .Include(b => b.Showing)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (booking == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(booking);
         }
 
-        // GET: Movies/Create
+        // GET: Bookings/Create
         public IActionResult Create()
         {
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id");
             return View();
         }
 
-        // POST: Movies/Create
+        // POST: Bookings/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MovieName,Id,SalonId")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,ShowingId,Tickets")] Booking booking)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                _context.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
+            return View(booking);
         }
 
-        // GET: Movies/Edit/5
+        // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -72,22 +76,23 @@ namespace WebbLab3.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies.SingleOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            var booking = await _context.Bookings.SingleOrDefaultAsync(m => m.Id == id);
+            if (booking == null)
             {
                 return NotFound();
             }
-            return View(movie);
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
+            return View(booking);
         }
 
-        // POST: Movies/Edit/5
+        // POST: Bookings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MovieName,Id,SalonId")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,ShowingId,Tickets")] Booking booking)
         {
-            if (id != movie.Id)
+            if (id != booking.Id)
             {
                 return NotFound();
             }
@@ -96,12 +101,12 @@ namespace WebbLab3.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    _context.Update(booking);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!MovieExists(movie.Id))
+                    if (!BookingExists(booking.Id))
                     {
                         return NotFound();
                     }
@@ -112,10 +117,11 @@ namespace WebbLab3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(movie);
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
+            return View(booking);
         }
 
-        // GET: Movies/Delete/5
+        // GET: Bookings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -123,30 +129,31 @@ namespace WebbLab3.Controllers
                 return NotFound();
             }
 
-            var movie = await _context.Movies
+            var booking = await _context.Bookings
+                .Include(b => b.Showing)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (movie == null)
+            if (booking == null)
             {
                 return NotFound();
             }
 
-            return View(movie);
+            return View(booking);
         }
 
-        // POST: Movies/Delete/5
+        // POST: Bookings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var movie = await _context.Movies.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Movies.Remove(movie);
+            var booking = await _context.Bookings.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Bookings.Remove(booking);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool MovieExists(int id)
+        private bool BookingExists(int id)
         {
-            return _context.Movies.Any(e => e.Id == id);
+            return _context.Bookings.Any(e => e.Id == id);
         }
     }
 }
