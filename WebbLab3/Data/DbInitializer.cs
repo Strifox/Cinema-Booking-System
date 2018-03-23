@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -48,14 +49,14 @@ namespace WebbLab3
 
             var showings = new[] // Showings Array
             {
-                new Showing{MovieId = 1, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-01 20:20:00Z")},
-                new Showing{MovieId = 2, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-01 20:20:00Z")},
-                new Showing{MovieId = 3, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-02 21:20:00Z")},
-                new Showing{MovieId = 4, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-02 21:20:00Z")},
-                new Showing{MovieId = 1, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-01 22:20:00Z")},
-                new Showing{MovieId = 2, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-01 22:20:00Z")},
-                new Showing{MovieId = 3, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-02 23:20:00Z")},
-                new Showing{MovieId = 4, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-02 23:20:00Z")},
+                new Showing{MovieId = 1, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-01 20:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 2, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-01 20:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 3, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-02 21:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 4, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-02 21:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 1, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-01 22:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 2, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-01 22:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 3, SalonId = 1, MovieDateTime = DateTime.Parse("2018-04-02 23:20:00", CultureInfo.InvariantCulture)},
+                new Showing{MovieId = 4, SalonId = 2, MovieDateTime = DateTime.Parse("2018-04-02 23:20:00", CultureInfo.InvariantCulture)},
             };
 
             foreach (var showing in showings)
@@ -66,14 +67,14 @@ namespace WebbLab3
 
             var bookings = new[] // Bookings Array
             {
-                new Booking{ShowingId = 1, Tickets = 300},
-                new Booking{ShowingId = 2, Tickets = 300},
-                new Booking{ShowingId = 3, Tickets = 300},
-                new Booking{ShowingId = 4, Tickets = 300},
-                new Booking{ShowingId = 5, Tickets = 300},
-                new Booking{ShowingId = 6, Tickets = 300},
-                new Booking{ShowingId = 7, Tickets = 300},  
-                new Booking{ShowingId = 8, Tickets = 300},
+                new Booking{ShowingId = 1, Tickets = 50},
+                new Booking{ShowingId = 2, Tickets = 100},
+                new Booking{ShowingId = 3, Tickets = 50},
+                new Booking{ShowingId = 4, Tickets = 100},
+                new Booking{ShowingId = 5, Tickets = 50},
+                new Booking{ShowingId = 6, Tickets = 100},
+                new Booking{ShowingId = 7, Tickets = 50},  
+                new Booking{ShowingId = 8, Tickets = 100},
             };
             foreach (var booking in bookings)
             {
