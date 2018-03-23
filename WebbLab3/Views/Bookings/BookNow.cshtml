@@ -14,7 +14,7 @@
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="Showing.Movie.MovieName" class="control-label"></label>
-                <select asp-for="Showing.Movie.MovieName" class="form-control" asp-items="ViewBag.ShowingId"></select>
+                <select asp-for="Showing.Movie.MovieName" class="form-control" asp-items="ViewBag.ShowingBookingId"></select>
                 <span asp-validation-for="Showing.Movie.MovieName" class="text-danger"></span>
             </div>
             <div class="form-group">

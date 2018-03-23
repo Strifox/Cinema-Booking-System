@@ -95,27 +95,27 @@ namespace WebbLab3.Controllers
         }
 
         //Visitors Editor (Used for Booking)
-        public async Task<IActionResult> BookNow(string name)
+        public async Task<IActionResult> BookNow(int? id)
         {
-            if (name == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.SingleOrDefaultAsync(m => m.Showing.Movie.MovieName == name);
+            var booking = await _context.Bookings.SingleOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            ViewData["ShowingId"] = new SelectList(_context.Showings, "MovieName", "MovieName", booking.Showing.Movie.MovieName);
+            ViewData["ShowingBookingId"] = new SelectList(_context.Movies, "Id", "MovieName", booking.ShowingId);
             return View(booking);
         }
 
         //Visitors Editor (Used for Booking)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BookNow(int id, [Bind("Id,ShowingId,Tickets")] Booking booking)
+        public async Task<IActionResult> BookNow(int id, [Bind("Id,ShowingBookingId,Tickets")] Booking booking)
         {
             if (id != booking.Id)
             {
@@ -142,7 +142,7 @@ namespace WebbLab3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
+            ViewData["ShowingBookingId"] = new SelectList(_context.Showings, "Id", "MMovieName", booking.ShowingId);
             return View(booking);
         }
 
