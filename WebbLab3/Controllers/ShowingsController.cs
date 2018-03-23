@@ -24,6 +24,7 @@ namespace WebbLab3.Controllers
             var entityContext = _context.Showings.Include(s => s.Movie).Include(s => s.Salon);
             return View(await entityContext.ToListAsync());
         }
+ 
 
         // GET: Showings/Details/5
         public async Task<IActionResult> Details(int? id)

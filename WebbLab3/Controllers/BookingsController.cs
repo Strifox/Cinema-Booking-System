@@ -24,6 +24,13 @@ namespace WebbLab3.Controllers
             var entityContext = _context.Bookings.Include(b => b.Showing);
             return View(await entityContext.ToListAsync());
         }
+        public async Task<IActionResult> BookTickets()
+        {
+            var entityContext = _context.Bookings.Include(b => b.Showing).ThenInclude(m => m.Movie).Include(s => s.Showing.Salon);
+            return View(await entityContext.ToListAsync());
+        }
+
+
 
         // GET: Bookings/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -34,7 +41,7 @@ namespace WebbLab3.Controllers
             }
 
             var booking = await _context.Bookings
-                .Include(b => b.Showing)
+                .Include(b => b.Showing).ThenInclude(m => m.Movie)
                 .SingleOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
@@ -68,6 +75,7 @@ namespace WebbLab3.Controllers
             return View(booking);
         }
 
+
         // GET: Bookings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -81,9 +89,65 @@ namespace WebbLab3.Controllers
             {
                 return NotFound();
             }
+
             ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
             return View(booking);
         }
+
+        //Visitors Editor (Used for Booking)
+        public async Task<IActionResult> BookNow(string name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+
+            var booking = await _context.Bookings.SingleOrDefaultAsync(m => m.Showing.Movie.MovieName == name);
+            if (booking == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "MovieName", "MovieName", booking.Showing.Movie.MovieName);
+            return View(booking);
+        }
+
+        //Visitors Editor (Used for Booking)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BookNow(int id, [Bind("Id,ShowingId,Tickets")] Booking booking)
+        {
+            if (id != booking.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(booking);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!BookingExists(booking.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
+            return View(booking);
+        }
+
+
+
 
         // POST: Bookings/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
