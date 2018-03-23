@@ -25,6 +25,12 @@ namespace WebbLab3.Controllers
             return View(await entityContext.ToListAsync());
         }
 
+        public async Task<IActionResult> BookTickets()
+        {
+            var entityContext = _context.Showings.Include(s => s.Movie).Include(s => s.Salon);
+            return View(await entityContext.ToListAsync());
+        }
+
         // GET: Showings/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebbLab3.Showing>
+@{
+    ViewData["Title"] = "BookTickets";
+}
+
+<h2>BookTickets</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Showing.MovieDateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Showing)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tickets)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Showing.MovieDateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Showing.Movie.MovieName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tickets)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
