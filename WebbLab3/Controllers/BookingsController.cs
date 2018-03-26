@@ -94,7 +94,7 @@ namespace WebbLab3.Controllers
             return View(booking);
         }
 
-        //Visitors Editor (Used for Booking)
+        //Method to book tickets (Used for Booking)
         public async Task<IActionResult> BookNow(int? id)
         {
             if (id == null)
@@ -142,7 +142,7 @@ namespace WebbLab3.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ShowingBookingId"] = new SelectList(_context.Showings, "Id", "MMovieName", booking.ShowingId);
+            ViewData["ShowingBookingId"] = new SelectList(_context.Movies, "Id", "MovieName", booking.ShowingId);
             return View(booking);
         }
 
