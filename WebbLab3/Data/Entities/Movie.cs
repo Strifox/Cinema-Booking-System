@@ -14,6 +14,5 @@ namespace WebbLab3
         public string MovieName { get; set; }
         public int Id { get; set; }
         public int SalonId { get; set; }
-        public string Name => MovieName;
     }
 }

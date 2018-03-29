@@ -43,7 +43,7 @@
                     @Html.DisplayFor(modelItem => item.Showing.Salon.SalonName)
                 </td>
                 <td>
-                    <a class="btn btn-default" asp-area="" asp-controller="Bookings" asp-action="BookNow/1">Book Now</a>
+                    <a class="btn btn-default" asp-action="BookNow" asp-controller="Bookings" asp-route-id="@item.Id">Book Now</a>
                 </td>
             </tr>
         }
