@@ -1,41 +1,51 @@
 ﻿@model IEnumerable<WebbLab3.Booking>
-
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "BookTickets";
 }
 
-<h2>Index</h2>
+<h2>BookTickets</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Tickets)
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.Showing)
+                @Html.DisplayNameFor(model => model.Showing.MovieDateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Showing.Movie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Tickets)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Showing.Salon)
+            </th>
+            <th>
+                Book Tickets
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tickets)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Showing.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Showing.MovieDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Showing.Movie.MovieName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tickets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Showing.Salon.SalonName)
+                </td>
+                <td>
+                    <a class="btn btn-default" asp-action="BookNow" asp-controller="Bookings" asp-route-id="@item.Id">Book Now</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

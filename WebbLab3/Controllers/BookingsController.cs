@@ -21,7 +21,7 @@ namespace WebbLab3.Controllers
         // GET: Bookings
         public async Task<IActionResult> Index()
         {
-            var entityContext = _context.Bookings.Include(b => b.Showing);
+            var entityContext = _context.Bookings.Include(bookings => bookings.Showing).ThenInclude(movie => movie.Movie);
             return View(await entityContext.ToListAsync());
         }
         public async Task<IActionResult> BookTickets()
@@ -94,7 +94,7 @@ namespace WebbLab3.Controllers
             return View(booking);
         }
 
-        //Method to book tickets (Used for Booking)
+        //Method to SHOW book tickets (Used for Booking)
         public async Task<IActionResult> BookNow(int? id)
         {
             if (id == null)
@@ -102,48 +102,103 @@ namespace WebbLab3.Controllers
                 return NotFound();
             }
 
-            var booking = await _context.Bookings.SingleOrDefaultAsync(m => m.Id == id);
+            var booking = await _context.Bookings.Include(bookings => bookings.Showing).ThenInclude(movie => movie.Movie).SingleOrDefaultAsync(m => m.Id == id);
             if (booking == null)
             {
                 return NotFound();
             }
 
-            ViewData["ShowingBookingId"] = new SelectList(_context.Movies, "Id", "MovieName", booking.ShowingId);
+            ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
             return View(booking);
         }
 
-        //Visitors Editor (Used for Booking)
+        //Method to BOOK tickets (Used for Booking)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> BookNow(int id, [Bind("Id,ShowingBookingId,Tickets")] Booking booking)
+        public IActionResult Booking(int? id, int tickets)
         {
-            if (id != booking.Id)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            var showingsquery = _context.Bookings.Include(s => s.Showing).ThenInclude(m => m.Movie)
+                .SingleOrDefault(m => m.Id == id);
+
+            if (tickets < 1 || tickets > 12)
             {
-                try
-                {
-                    _context.Update(booking);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!BookingExists(booking.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                @ViewData["TicketError"] = "You can only book between 1-12 tickets";
+                return View(showingsquery);
             }
-            ViewData["ShowingBookingId"] = new SelectList(_context.Movies, "Id", "MovieName", booking.ShowingId);
-            return View(booking);
+
+            var bookedSeats = showingsquery;
+
+            bookedSeats.Tickets -= tickets;
+
+            if (bookedSeats.Tickets >= 0)
+            {
+                _context.Update(bookedSeats);
+
+                var bookings = new Booking
+                {
+                    Showing = bookedSeats.Showing,
+                    Tickets = tickets,
+                };
+                _context.Bookings.Add(bookings);
+                _context.SaveChanges();
+                return View(bookings);
+            }
+            else
+            {
+                bookedSeats.Tickets += tickets;
+                @ViewData["TicketError"] = "There is only " + bookedSeats.Tickets + " left";
+
+                return View(showingsquery);
+
+            }
+        }
+
+        public IActionResult Confirmation(int? id, int tickets)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var showingsquery = _context.Bookings.Include(s => s.Showing).ThenInclude(m => m.Movie)
+                .SingleOrDefault(m => m.Id == id);
+
+            if (tickets < 1 || tickets > 12)
+            {
+                @ViewData["TicketError"] = "You can only book between 1-12 tickets";
+                return View(showingsquery);
+            }
+
+            var bookedSeats = showingsquery;
+
+            bookedSeats.Tickets -= tickets;
+
+            if (bookedSeats.Tickets >= 0)
+            {
+                _context.Update(bookedSeats);
+
+                var bookings = new Booking
+                {
+                    Showing = bookedSeats.Showing,
+                    Tickets = tickets,
+                };
+                _context.Bookings.Add(bookings);
+                _context.SaveChanges();
+                return View(bookings);
+            }
+            else
+            {
+                bookedSeats.Tickets += tickets;
+                @ViewData["TicketError"] = "There is only " + bookedSeats.Tickets + " left";
+
+                return View(showingsquery);
+
+            }
         }
 
 

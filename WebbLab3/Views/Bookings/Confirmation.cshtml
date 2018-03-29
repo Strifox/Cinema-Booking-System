@@ -1,0 +1,11 @@
+﻿@model WebbLab3.Booking
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<h2>Confirmation</h2>
+
+<p>Movie: @Html.DisplayFor(model => model.Showing.Movie.MovieName)</p>
+<p>Airdate: @Html.DisplayFor(model => model.Showing.MovieDateTime)</p>
+<p>Tickets booked: @Html.DisplayFor(model => model.Tickets)</p>
+<a asp-action="Index">Back to home</a>
