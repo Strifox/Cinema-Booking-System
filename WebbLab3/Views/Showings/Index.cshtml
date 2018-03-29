@@ -1,47 +1,48 @@
-﻿@model IEnumerable<WebbLab3.Showing>
+﻿@model IEnumerable<WebbLab3.ShowingViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Shows</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.MovieDateTime)
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.Movie)
+                @Html.ActionLink("Date", "Index", new { sorting = ViewBag.DateTimeSorting })
+
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Salon)
+                Movie
             </th>
+            <th>
+                @Html.ActionLink("Tickets", "Index", new { sorting = ViewBag.TicketsSorting })
+            </th>
+            <th>
+                Salon
+            </th>
+
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MovieDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Movie.MovieName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Salon.SalonName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr class="@(item.Tickets > 0 ? "White" : "Red")">
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tickets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalonName)
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

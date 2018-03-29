@@ -1,39 +1,17 @@
 ﻿@model WebbLab3.Booking
-
 @{
-    ViewData["Title"] = "Edit";
+
 }
+<h2>Book tickets to @Html.DisplayFor(model => model.Showing.Movie.MovieName) </h2>
+<br />
+@Html.DisplayFor(model => model.Showing.MovieDateTime)
+<p><em>Max 12 tickets</em></p>
+<p><em>@Model.Tickets Tickets left</em></p>
 
-<h2>Book Tickets Now</h2>
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Showing.Movie.MovieName" class="control-label"></label>
-                <select asp-for="Showing.Movie.MovieName" class="form-control" asp-items="ViewBag.ShowingId"></select>
-                <span asp-validation-for="Showing.Movie.MovieName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Tickets" class="control-label"></label>
-                <input asp-for="Tickets" class="form-control" value="0"/>
-                <span asp-validation-for="Tickets" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Book now" class="btn btn-default" />
-            </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="BookTickets">Back to List</a>
-</div>
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
-
+<br />
+<form asp-action="Confirmation" asp-route-id="@Model.Id" asp-controller="Bookings">
+    <input type="number" name="Tickets" value="1" min="1" max="@ViewBag.MaxAmount" />
+    <input type="submit" value="Book" />
+</form>
+<div class="text-danger">@ViewData["TicketError"]</div>
 

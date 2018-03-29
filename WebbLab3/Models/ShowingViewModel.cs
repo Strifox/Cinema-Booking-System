@@ -5,13 +5,15 @@ using System.Threading.Tasks;
 
 namespace WebbLab3
 {
-    public class Salon
+    public class ShowingViewModel
     {
-        //Navigation Property
-        public IList<Showing> Showings { get; set; }
 
-        public int SalonSeats { get; set; }
         public int Id { get; set; }
+
+        public int MovieId { get; set; }
+        public string MovieName { get; set; }
         public string SalonName { get; set; }
+        public int Tickets { get; set; }
+        public DateTime MovieDateTime { get; set; }
     }
 }

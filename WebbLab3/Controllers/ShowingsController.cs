@@ -19,12 +19,55 @@ namespace WebbLab3.Controllers
         }
 
         // GET: Showings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sorting)
         {
-            var entityContext = _context.Showings.Include(s => s.Movie).Include(s => s.Salon);
-            return View(await entityContext.ToListAsync());
+            ViewBag.DateTimeSorting = string.IsNullOrEmpty(sorting) ? "MovieDateTime_desc" : "";
+            ViewBag.TicketsSorting = sorting == "Tickets_desc" ?  "Tickets_asc" : "Tickets_desc";
+
+
+            var sortingContext = await _context.Showings
+         .Where(s => s.MovieDateTime > DateTime.Now)
+         .Include(s => s.Movie)
+         .Include(s => s.Bookings)
+         .Include(s => s.Salon)
+         .ToListAsync();
+
+            List<ShowingViewModel> sortingFilter = new List<ShowingViewModel>();
+
+            foreach (var item in sortingContext)
+            {
+                sortingFilter.Add(new ShowingViewModel()
+                {
+                    Id = item.Id,
+                    MovieId = item.MovieId,
+                    MovieName = item.Movie.MovieName,
+                    SalonName = item.Salon.SalonName,
+                    MovieDateTime = item.MovieDateTime,
+                    Tickets = item.Bookings.Sum(s => s.Tickets)
+                });
+
+            }
+
+
+            switch (sorting)
+            {
+                case "MovieDateTime_desc":
+                    sortingFilter = sortingFilter.OrderByDescending(s => s.MovieDateTime).ToList();
+                    break;
+                case "Tickets_desc":
+                    sortingFilter = sortingFilter.OrderByDescending(s => s.Tickets).ToList();
+                    break;
+                case "Tickets_asc":
+                    sortingFilter = sortingFilter.OrderBy(s => s.Tickets).ToList();
+                    break;
+                default:
+                    sortingFilter = sortingFilter.OrderBy(s => s.MovieDateTime).ToList();
+                    break;
+            }
+
+            return View(sortingFilter);
         }
- 
+
 
         // GET: Showings/Details/5
         public async Task<IActionResult> Details(int? id)

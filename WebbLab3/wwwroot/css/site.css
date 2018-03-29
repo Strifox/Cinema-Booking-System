@@ -8,6 +8,13 @@
     text-align: center;
 }
 
+.Red {
+    background-color: red;
+}
+
+.White {
+    background-color: White;
+}
 /* Wrapping element */
 /* Set some basic padding to keep content from hitting the edges */
 .body-content {

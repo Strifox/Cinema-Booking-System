@@ -1,41 +1,58 @@
-﻿@model IEnumerable<WebbLab3.Booking>
-
+﻿@model IEnumerable<WebbLab3.ShowingViewModel>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "BookTickets";
 }
 
-<h2>Index</h2>
+<h2>BookTickets</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Tickets)
-                </th>
             <th>
-                @Html.DisplayNameFor(model => model.Showing)
+                @Html.ActionLink("Date", "Index", new { sorting = ViewBag.DateTimeSorting })
+            </th>
+            <th>
+                Movie
+            </th>
+            <th>
+                @Html.ActionLink("Tickets", "Index", new { sorting = ViewBag.TicketsSorting })
+            </th>
+            <th>
+                Salon
+            </th>
+
+            <th>
+                Book Tickets
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tickets)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Showing.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr class="@(item.Tickets > 0 ? "White" : "Red")">
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MovieName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tickets)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SalonName)
+                </td>
+                <td>
+                    @if(item.Tickets > 0){
+                        <a class="btn btn-default" asp-action="BookNow" asp-controller="Bookings" asp-route-id="@item.Id">Book Now</a> 
+                    }else
+                    {
+                        <strong>Tickets Sold OUT!</strong>
+
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
