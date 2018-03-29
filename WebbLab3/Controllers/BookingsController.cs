@@ -19,10 +19,53 @@ namespace WebbLab3.Controllers
         }
 
         // GET: Bookings
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sorting)
         {
-            var entityContext = _context.Bookings.Include(bookings => bookings.Showing).ThenInclude(movie => movie.Movie);
-            return View(await entityContext.ToListAsync());
+            var sortingContext = await _context.Showings
+      .Where(s => s.MovieDateTime > DateTime.Now)
+      .Include(s => s.Movie)
+      .Include(s => s.Bookings)
+      .Include(s => s.Salon)
+      .ToListAsync();
+
+            ViewBag.DateTimeSorting = string.IsNullOrEmpty(sorting) ? "MovieDateTime_desc" : "";
+            ViewBag.TicketsSorting = sorting == "Tickets_desc" ? "Tickets_asc" : "Tickets_desc";
+
+
+            List<ShowingViewModel> sortingFilter = new List<ShowingViewModel>();
+
+            foreach (var item in sortingContext)
+            {
+                sortingFilter.Add(new ShowingViewModel()
+                {
+                    Id = item.Id,
+                    MovieId = item.MovieId,
+                    MovieName = item.Movie.MovieName,
+                    SalonName = item.Salon.SalonName,
+                    MovieDateTime = item.MovieDateTime,
+                    Tickets = item.Bookings.Sum(s => s.Tickets)
+                });
+
+            }
+
+
+            switch (sorting)
+            {
+                case "MovieDateTime_desc":
+                    sortingFilter = sortingFilter.OrderByDescending(s => s.MovieDateTime).ToList();
+                    break;
+                case "Tickets_desc":
+                    sortingFilter = sortingFilter.OrderByDescending(s => s.Tickets).ToList();
+                    break;
+                case "Tickets_asc":
+                    sortingFilter = sortingFilter.OrderBy(s => s.Tickets).ToList();
+                    break;
+                default:
+                    sortingFilter = sortingFilter.OrderBy(s => s.MovieDateTime).ToList();
+                    break;
+            }
+
+            return View(sortingFilter);
         }
         public async Task<IActionResult> BookTickets()
         {
@@ -109,6 +152,7 @@ namespace WebbLab3.Controllers
             }
 
             ViewData["ShowingId"] = new SelectList(_context.Showings, "Id", "Id", booking.ShowingId);
+            ViewBag.MaxAmount = booking.Tickets < 12 ? booking.Tickets : 12;
             return View(booking);
         }
 
@@ -187,7 +231,6 @@ namespace WebbLab3.Controllers
                     Showing = bookedSeats.Showing,
                     Tickets = tickets,
                 };
-                _context.Bookings.Add(bookings);
                 _context.SaveChanges();
                 return View(bookings);
             }
@@ -200,8 +243,6 @@ namespace WebbLab3.Controllers
 
             }
         }
-
-
 
 
         // POST: Bookings/Edit/5

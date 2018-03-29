@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WebbLab3.Booking>
+﻿@model IEnumerable<WebbLab3.ShowingViewModel>
 @{
     ViewData["Title"] = "BookTickets";
 }
@@ -9,17 +9,18 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Showing.MovieDateTime)
+                @Html.ActionLink("Date", "Index", new { sorting = ViewBag.DateTimeSorting })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Showing.Movie)
+                Movie
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Tickets)
+                @Html.ActionLink("Tickets", "Index", new { sorting = ViewBag.TicketsSorting })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Showing.Salon)
+                Salon
             </th>
+
             <th>
                 Book Tickets
             </th>
@@ -29,21 +30,27 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr class="@(item.Tickets > 0 ? "White" : "Red")">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Showing.MovieDateTime)
+                    @Html.DisplayFor(modelItem => item.MovieDateTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Showing.Movie.MovieName)
+                    @Html.DisplayFor(modelItem => item.MovieName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Tickets)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Showing.Salon.SalonName)
+                    @Html.DisplayFor(modelItem => item.SalonName)
                 </td>
                 <td>
-                    <a class="btn btn-default" asp-action="BookNow" asp-controller="Bookings" asp-route-id="@item.Id">Book Now</a>
+                    @if(item.Tickets > 0){
+                        <a class="btn btn-default" asp-action="BookNow" asp-controller="Bookings" asp-route-id="@item.Id">Book Now</a> 
+                    }else
+                    {
+                        <strong>Tickets Sold OUT!</strong>
+
+                    }
                 </td>
             </tr>
         }

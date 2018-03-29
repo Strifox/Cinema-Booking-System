@@ -6,9 +6,11 @@
 <br />
 @Html.DisplayFor(model => model.Showing.MovieDateTime)
 <p><em>Max 12 tickets</em></p>
+<p><em>@Model.Tickets Tickets left</em></p>
+
 <br />
 <form asp-action="Confirmation" asp-route-id="@Model.Id" asp-controller="Bookings">
-    <input type="number" name="Tickets" value="1" />
+    <input type="number" name="Tickets" value="1" min="1" max="@ViewBag.MaxAmount" />
     <input type="submit" value="Book" />
 </form>
 <div class="text-danger">@ViewData["TicketError"]</div>
